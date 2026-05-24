@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garage Master Ultra Max</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0f172a;
+color:white;
+padding:20px;
+overflow:hidden;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.logo{
+font-size:35px;
+font-weight:bold;
+color:#38bdf8;
+}
+
+.logo span{
+color:#f97316;
+}
+
+.search-box{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.search-box input{
+padding:12px;
+width:250px;
+background:#1e293b;
+border:none;
+border-radius:12px;
+color:white;
+}
+
+button{
+border:none;
+padding:12px 16px;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+color:white;
+}
+
+.search-btn{
+background:#38bdf8;
+}
+
+.voice-btn{
+background:#f97316;
+}
+
+.add-btn{
+background:#22c55e;
+width:100%;
+margin-top:10px;
+}
+
+.remove-btn{
+background:#ef4444;
+}
+
+.qty-btn{
+background:#38bdf8;
+width:30px;
+height:30px;
+padding:0;
+}
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:18px;
+}
+
+.card h1{
+font-size:30px;
+color:#38bdf8;
+margin-bottom:8px;
+}
+
+.form-box{
+background:#1e293b;
+padding:20px;
+border-radius:18px;
+margin-bottom:20px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
+}
+
+.form-grid input{
+padding:12px;
+background:#0f172a;
+border:none;
+border-radius:10px;
+color:white;
+}
+
+.table-box{
+background:#1e293b;
+padding:15px;
+border-radius:18px;
+}
+
+.table-container{
+height:500px;
+overflow:auto;
+border-radius:12px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:900px;
+}
+
+th{
+position:sticky;
+top:0;
+background:#38bdf8;
+padding:14px;
+text-align:left;
+}
+
+td{
+padding:12px;
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+tr:hover{
+background:#111827;
+}
+
+.table-input{
+width:100%;
+padding:10px;
+background:#0f172a;
+border:none;
+border-radius:8px;
+color:white;
+}
+
+.qty-box{
+display:flex;
+gap:6px;
+align-items:center;
+}
+
+.ai-box{
+background:#1e293b;
+padding:20px;
+border-radius:18px;
+margin-top:20px;
+}
+
+.ai-buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:10px;
+}
+
+.android{background:#22c55e;}
+.meta{background:#2563eb;}
+.siri{background:#7c3aed;}
+.alexa{background:#06b6d4;}
+
+.total-box{
+margin-top:20px;
+font-size:28px;
+color:#22c55e;
+font-weight:bold;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+
+<div class="logo">
+Garage<span>Master</span>
+</div>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search Product">
+<button class="search-btn" onclick="searchTable()">Search</button>
+<button class="voice-btn" onclick="voiceSearch()">🎤 Voice AI</button>
+</div>
+
+</div>
+
+<div class="dashboard">
+
+<div class="card">
+<h1 id="totalRows">100000</h1>
+<p>Total Database Tables</p>
+</div>
+
+<div class="card">
+<h1 id="visibleRows">100000</h1>
+<p>Visible Rows</p>
+</div>
+
+<div class="card">
+<h1>FAST</h1>
+<p>No Hang Ultra Engine</p>
+</div>
+
+<div class="card">
+<h1>AI</h1>
+<p>Android + Meta + Siri + Alexa</p>
+</div>
+
+</div>
+
+<div class="form-box">
+
+<h2>Add Product</h2>
+
+<div class="form-grid">
+
+<input type="text" id="productName" placeholder="Product Name">
+
+<input type="number" id="productQty" placeholder="Quantity">
+
+<input type="number" id="productRate" placeholder="Rate">
+
+</div>
+
+<button class="add-btn" onclick="addProduct()">
+ADD PRODUCT
+</button>
+
+</div>
+
+<div class="table-box">
+
+<div class="table-container">
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name Of Product</th>
+<th>Quantity</th>
+<th>Rate</th>
+<th>Total</th>
+<th>Update Qty</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="total-box">
+Grand Total ₹ <span id="grandTotal">0</span>
+</div>
+
+<div class="ai-box">
+
+<h2>AI Assistants</h2>
+
+<div class="ai-buttons">
+
+<button class="android" onclick="alert('Android AI Activated')">
+Android AI
+</button>
+
+<button class="meta" onclick="alert('Meta AI Activated')">
+Meta AI
+</button>
+
+<button class="siri" onclick="alert('Siri Activated')">
+Siri
+</button>
+
+<button class="alexa" onclick="alert('Alexa Activated')">
+Alexa
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const tableBody=document.getElementById('tableBody');
+
+let grand=0;
+
+// FAST LOAD 9000 ROWS
+for(let i=1;i<=9000;i++){
+
+let row=document.createElement('tr');
+
+row.innerHTML=`
+
+<td>${1000+i}</td>
+
+<td>
+<input class="table-input" placeholder="Enter Product">
+</td>
+
+<td class="qty">0</td>
+
+<td>
+<input class="table-input rate" placeholder="Enter Rate">
+</td>
+
+<td class="total">0</td>
+
+<td>
+
+<div class="qty-box">
+
+<button class="qty-btn" onclick="changeQty(this,-1)">
+-
+</button>
+
+<button class="qty-btn" onclick="changeQty(this,1)">
++
+</button>
+
+</div>
+
+</td>
+
+<td>
+
+<button class="remove-btn" onclick="removeRow(this)">
+Remove
+</button>
+
+</td>
+
+`;
+
+tableBody.appendChild(row);
+
+}
+
+function changeQty(btn,value){
+
+let row=btn.closest('tr');
+
+let qtyCell=row.querySelector('.qty');
+
+let qty=parseInt(qtyCell.innerText);
+
+qty+=value;
+
+if(qty<0){
+qty=0;
+}
+
+qtyCell.innerText=qty;
+
+updateRowTotal(row);
+
+}
+
+function updateRowTotal(row){
+
+let qty=parseInt(row.querySelector('.qty').innerText);
+
+let rateInput=row.querySelector('.rate');
+
+let rate=parseInt(rateInput.value)||0;
+
+let total=qty*rate;
+
+row.querySelector('.total').innerText=total;
+
+calculateGrand();
+
+}
+
+document.addEventListener('input',function(e){
+
+if(e.target.classList.contains('rate')){
+updateRowTotal(e.target.closest('tr'));
+}
+
+});
+
+function removeRow(btn){
+
+btn.closest('tr').remove();
+
+updateDashboard();
+
+calculateGrand();
+
+}
+
+function addProduct(){
+
+let name=document.getElementById('productName').value;
+
+let qty=document.getElementById('productQty').value;
+
+let rate=document.getElementById('productRate').value;
+
+if(name===''||qty===''||rate===''){
+alert('Fill all fields');
+return;
+}
+
+let id=Math.floor(Math.random()*999999);
+
+let total=qty*rate;
+
+let row=document.createElement('tr');
+
+row.innerHTML=`
+
+<td>${id}</td>
+
+<td>
+<input class="table-input" value="${name}">
+</td>
+
+<td class="qty">${qty}</td>
+
+<td>
+<input class="table-input rate" value="${rate}">
+</td>
+
+<td class="total">${total}</td>
+
+<td>
+
+<div class="qty-box">
+
+<button class="qty-btn" onclick="changeQty(this,-1)">
+-
+</button>
+
+<button class="qty-btn" onclick="changeQty(this,1)">
++
+</button>
+
+</div>
+
+</td>
+
+<td>
+
+<button class="remove-btn" onclick="removeRow(this)">
+Remove
+</button>
+
+</td>
+
+`;
+
+tableBody.prepend(row);
+
+updateDashboard();
+
+calculateGrand();
+
+}
+
+function searchTable(){
+
+let input=document.getElementById('searchInput').value.toLowerCase();
+
+let rows=document.querySelectorAll('#tableBody tr');
+
+rows.forEach(row=>{
+
+let text=row.innerText.toLowerCase();
+
+if(text.includes(input)){
+row.style.display='';
+}else{
+row.style.display='none';
+}
+
+});
+
+updateDashboard();
+
+}
+
+function updateDashboard(){
+
+let rows=document.querySelectorAll('#tableBody tr');
+
+document.getElementById('totalRows').innerText=rows.length;
+
+let visible=0;
+
+rows.forEach(row=>{
+
+if(row.style.display!=='none'){
+visible++;
+}
+
+});
+
+document.getElementById('visibleRows').innerText=visible;
+
+}
+
+function calculateGrand(){
+
+let totals=document.querySelectorAll('.total');
+
+grand=0;
+
+totals.forEach(t=>{
+
+grand+=parseInt(t.innerText)||0;
+
+});
+
+document.getElementById('grandTotal').innerText=grand;
+
+}
+
+function voiceSearch(){
+
+if(!('webkitSpeechRecognition' in window)){
+alert('Voice Search Not Supported');
+return;
+}
+
+let recognition=new webkitSpeechRecognition();
+
+recognition.lang='en-US';
+
+recognition.start();
+
+recognition.onresult=function(event){
+
+let text=event.results[0][0].transcript;
+
+document.getElementById('searchInput').value=text;
+
+searchTable();
+
+};
+
+}
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
